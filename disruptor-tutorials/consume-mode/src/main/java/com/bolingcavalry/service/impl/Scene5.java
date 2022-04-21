@@ -2,8 +2,6 @@ package com.bolingcavalry.service.impl;
 
 import com.bolingcavalry.service.ConsumeModeService;
 import com.bolingcavalry.service.MailEventHandler;
-import com.bolingcavalry.service.MailWorkHandler;
-import com.bolingcavalry.service.SmsEventHandler;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,16 +13,16 @@ import org.springframework.stereotype.Service;
 @Service("scene5")
 public class Scene5 extends ConsumeModeService {
 
-    @Override
-    protected void disruptorOperate() {
-        MailEventHandler c1 = new MailEventHandler(eventCountPrinter);
-        MailEventHandler c2 = new MailEventHandler(eventCountPrinter);
-        MailEventHandler c3 = new MailEventHandler(eventCountPrinter);
+	@Override
+	protected void disruptorOperate() {
+		MailEventHandler c1 = new MailEventHandler(eventCountPrinter, "c1");
+		MailEventHandler c2 = new MailEventHandler(eventCountPrinter, "c2");
+		MailEventHandler c3 = new MailEventHandler(eventCountPrinter, "c3");
 
-        disruptor
-                // C1、C2独立消费
-                .handleEventsWith(c1, c2)
-                // C3依赖C1和C2
-                .then(c3);
-    }
+		disruptor
+				// C1、C2独立消费
+				.handleEventsWith(c1, c2)
+				// C3依赖C1和C2
+				.then(c3);
+	}
 }
